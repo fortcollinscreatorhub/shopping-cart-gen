@@ -36,12 +36,14 @@ sku_mods = (
     (
         "first-month-",
         "FCCH Membership: First Month: ",
-        0.5
+        0.5,
+        0.00
     ),
     (
         "monthly-plan-",
         "FCCH Membership: Monthly: ",
-        1.0
+        0.0,
+        0.01
     ),
 )
 
@@ -57,10 +59,10 @@ def gen_hash(params):
     return names + plhash.hexdigest()
 
 for (sku, desc, value) in skus:
-    for (sku_prefix, desc_prefix, value_scale) in sku_mods:
+    for (sku_prefix, desc_prefix, value_scale, value_add) in sku_mods:
         sku_ex = sku_prefix + sku
         desc_ex = desc_prefix + desc
-        value_ex = value_scale * value
+        value_ex = (value_scale * value) + value_add
         params = [
             ("key_id", "5571335"),
             ("action", "process_cart"),
