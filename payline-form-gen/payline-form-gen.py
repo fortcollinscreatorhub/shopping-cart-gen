@@ -75,7 +75,7 @@ for (sku, desc, value) in skus:
             ("merchant_receipt_email", "billing@fortcollinscreatorhub.org"),
         ]
 
-        print '<form action="https://secure.paylinedatagateway.com/cart/cart.php" method="POST">'
+        print '<form style="line-height: 0px;" action="https://secure.paylinedatagateway.com/cart/cart.php" method="POST">'
         for (param_name, param_value) in params:
             print '<input type="hidden" name="%s" value="%s" />' % (param_name, param_value)
         print '<input type="hidden" name="hash" value="%s" />' % gen_hash(params)
