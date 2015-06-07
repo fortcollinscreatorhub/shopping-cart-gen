@@ -35,15 +35,27 @@ skus = (
 sku_mods = (
     (
         "first-month-",
-        "FCCH Membership: First Month: ",
+        "First Month",
         0.5,
-        0.00
+        0.00,
+        '2015/05',
+        False
+    ),
+    (
+        "single-month-",
+        "Single Month",
+        1.0,
+        0.00,
+        '2015/06',
+        False,
     ),
     (
         "monthly-plan-",
-        "FCCH Membership: Monthly: ",
+        "Monthly",
         0.0,
-        0.01
+        0.01,
+        '2015/05',
+        True
     ),
 )
 
@@ -59,9 +71,11 @@ def gen_hash(params):
     return names + plhash.hexdigest()
 
 for (sku, desc, value) in skus:
-    for (sku_prefix, desc_prefix, value_scale, value_add) in sku_mods:
+    print '<br/><h3>Add ' + desc + ' membership to cart</h3><br/>'
+
+    for (sku_prefix, desc_prefix, value_scale, value_add, media_upload_month, monthly_plan) in sku_mods:
         sku_ex = sku_prefix + sku
-        desc_ex = desc_prefix + desc
+        desc_ex = 'FCCH Membership: ' + desc_prefix + ': ' + desc
         value_ex = (value_scale * value) + value_add
         params = [
             ("key_id", "5571335"),
@@ -81,7 +95,10 @@ for (sku, desc, value) in skus:
         for (param_name, param_value) in params:
             print '<input type="hidden" name="%s" value="%s" />' % (param_name, param_value)
         print '<input type="hidden" name="hash" value="%s" />' % gen_hash(params)
-        print '<input type="image" src="/wp-content/uploads/2015/05/shopping-%s.png" alt="%s"/>' % (
-            sku_ex, desc_ex)
-        print '</form>'
-        print
+        print '<input type="image" src="/wp-content/uploads/%s/shopping-%s.png" alt="%s"/>' % (
+            media_upload_month, sku_ex, desc_ex)
+        if monthly_plan:
+            plan_text = ', $%0.2f every month' % value
+        else:
+            plan_text = ''
+        print '</form>$%0.2f one-time charge' % value_ex + plan_text
