@@ -70,20 +70,14 @@ def gen_hash(params):
     plhash.update(vals)
     return names + plhash.hexdigest()
 
-for (sku, desc, value) in skus:
-    print '<br/><h3>Add ' + desc + ' membership to cart</h3><br/>'
-
-    for (sku_prefix, desc_prefix, value_scale, value_add, media_upload_month, monthly_plan) in sku_mods:
-        sku_ex = sku_prefix + sku
-        desc_ex = 'FCCH Membership: ' + desc_prefix + ': ' + desc
-        value_ex = (value_scale * value) + value_add
+def gen_form(sku, desc, value, media_upload_month, explain_text):
         params = [
             ("key_id", "5571335"),
             ("action", "process_cart"),
             ("language", "en"),
-            ("product_sku_1", sku_ex),
-            ("product_description_1", desc_ex),
-            ("product_amount_1", "%0.2f" % value_ex),
+            ("product_sku_1", sku),
+            ("product_description_1", desc),
+            ("product_amount_1", "%0.2f" % value),
             ("url_continue", "http://www.fortcollinscreatorhub.org/?page_id=219"),
             ("url_cancel", "http://www.fortcollinscreatorhub.org/?page_id=219"),
             ("url_finish", "http://www.fortcollinscreatorhub.org/?page_id=263"),
@@ -96,9 +90,19 @@ for (sku, desc, value) in skus:
             print '<input type="hidden" name="%s" value="%s" />' % (param_name, param_value)
         print '<input type="hidden" name="hash" value="%s" />' % gen_hash(params)
         print '<input type="image" src="/wp-content/uploads/%s/shopping-%s.png" alt="%s"/>' % (
-            media_upload_month, sku_ex, desc_ex)
+            media_upload_month, sku, desc)
+        print '</form>' + explain_text
+
+for (sku, desc, value) in skus:
+    print '<br/><h3>Add ' + desc + ' membership to cart</h3><br/>'
+
+    for (sku_prefix, desc_prefix, value_scale, value_add, media_upload_month, monthly_plan) in sku_mods:
+        sku_ex = sku_prefix + sku
+        desc_ex = 'FCCH Membership: ' + desc_prefix + ': ' + desc
+        value_ex = (value_scale * value) + value_add
         if monthly_plan:
             plan_text = ', $%0.2f every month' % value
         else:
             plan_text = ''
-        print '</form>$%0.2f one-time charge' % value_ex + plan_text
+        explain_text = '$%0.2f one-time charge' % value_ex + plan_text
+        gen_form(sku_ex, desc_ex, value_ex, media_upload_month, explain_text)
