@@ -70,14 +70,19 @@ def gen_hash(params):
     plhash.update(vals)
     return names + plhash.hexdigest()
 
-def gen_form(sku, desc, value, media_upload_month, explain_text):
+def gen_form(action, sku, desc, value, media_upload_month, explain_text):
         params = [
             ("key_id", "5571335"),
-            ("action", "process_cart"),
+            ("action", action),
             ("language", "en"),
             ("product_sku_1", sku),
             ("product_description_1", desc),
-            ("product_amount_1", "%0.2f" % value),
+        ]
+        if value:
+            params += [
+                ("product_amount_1", "%0.2f" % value),
+            ]
+        params += [
             ("url_continue", "http://www.fortcollinscreatorhub.org/?page_id=219"),
             ("url_cancel", "http://www.fortcollinscreatorhub.org/?page_id=219"),
             ("url_finish", "http://www.fortcollinscreatorhub.org/?page_id=263"),
@@ -105,4 +110,7 @@ for (sku, desc, value) in skus:
         else:
             plan_text = ''
         explain_text = '$%0.2f one-time charge' % value_ex + plan_text
-        gen_form(sku_ex, desc_ex, value_ex, media_upload_month, explain_text)
+        gen_form('process_cart', sku_ex, desc_ex, value_ex, media_upload_month, explain_text)
+
+print '<br/><h3>Make a donation</h3><br/>'
+gen_form('process_variable', 'donate-now', 'FCCH: Donation', None, '2015/05', 'You choose the amount during checkout')
