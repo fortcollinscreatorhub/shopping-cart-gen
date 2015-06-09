@@ -49,6 +49,7 @@ plans = (
     ("First Month", "first-month"),
     ("Single Month", "single-month"),
     ("Monthly Plan", "monthly-plan"),
+    ("Prepay One Year", "one-year"),
 )
 
 levels = (

@@ -57,6 +57,14 @@ sku_mods = (
         '2015/05',
         True
     ),
+    (
+        "one-year-",
+        "One Year",
+        11.0,
+        0.0,
+        '2015/06',
+        False
+    ),
 )
 
 def gen_hash(params):
