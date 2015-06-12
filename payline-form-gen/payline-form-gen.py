@@ -98,18 +98,38 @@ def gen_form(action, sku, desc, value, media_upload_month, explain_text):
             ("merchant_receipt_email", "billing@fortcollinscreatorhub.org"),
         ]
 
-        print '<form style="line-height: 0px;" action="https://secure.paylinedatagateway.com/cart/cart.php" method="POST">'
+        print '<td><form style="line-height: 0px;" action="https://secure.paylinedatagateway.com/cart/cart.php" method="POST">'
         for (param_name, param_value) in params:
             print '<input type="hidden" name="%s" value="%s" />' % (param_name, param_value)
         print '<input type="hidden" name="hash" value="%s" />' % gen_hash(params)
         print '<input type="image" src="/wp-content/uploads/%s/shopping-%s.png" alt="%s"/>' % (
             media_upload_month, sku, desc)
-        print '</form>' + explain_text
+        print '</form>' + explain_text + '</td>'
+
+print '''\
+<table>	
+<tbody>
+<tr><td colspan="2"><h3>Cart</h3></td></tr>
+<tr>
+<td><form style="line-height: 0px;" action="https://secure.paylinedatagateway.com/cart/cart.php" method="post">
+<input name="key_id" type="hidden" value="5571335" />
+<input name="action" type="hidden" value="show_cart" />
+<input name="language" type="hidden" value="en" />
+<input name="url_continue" type="hidden" value="http://www.fortcollinscreatorhub.org/?page_id=219" />
+<input name="url_cancel" type="hidden" value="http://www.fortcollinscreatorhub.org/?page_id=219" />
+<input name="url_finish" type="hidden" value="http://www.fortcollinscreatorhub.org/?page_id=263" />
+<input name="customer_receipt" type="hidden" value="true" />
+<input name="merchant_receipt_email" type="hidden" value="billing@fortcollinscreatorhub.org" />
+<input alt="View Cart" src="/wp-content/uploads/2015/05/shopping-view-cart.png" type="image" /></form></td>
+</tr>'''
 
 for (sku, desc, value) in skus:
-    print '<br/><h3>Add ' + desc + ' membership to cart</h3><br/>'
+    print '<tr><td colspan="2"><h3>Add %s membership to cart</h3></td></tr>' % desc
 
+    idx = 0
     for (sku_prefix, desc_prefix, value_scale, value_add, media_upload_month, monthly_plan) in sku_mods:
+        if idx % 2 == 0:
+            print '<tr>'
         sku_ex = sku_prefix + sku
         desc_ex = 'FCCH Membership: ' + desc_prefix + ': ' + desc
         value_ex = (value_scale * value) + value_add
@@ -119,6 +139,15 @@ for (sku, desc, value) in skus:
             plan_text = ''
         explain_text = '$%0.2f one-time charge' % value_ex + plan_text
         gen_form('process_cart', sku_ex, desc_ex, value_ex, media_upload_month, explain_text)
+        if idx % 2 == 1:
+            print '</tr>'
+        idx += 1
 
-print '<br/><h3>Make a donation</h3><br/>'
+print '<tr><td colspan="2"><h3>Make a donation (doesn\'t use cart)</h3></td></tr>'
+print '<tr>'
 gen_form('process_variable', 'donate-now', 'FCCH: Donation', None, '2015/05', 'You choose the amount during checkout')
+print '''\
+<td></td>
+</tr>
+</tbody>
+</table>'''
