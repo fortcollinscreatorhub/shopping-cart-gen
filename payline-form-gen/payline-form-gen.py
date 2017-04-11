@@ -43,55 +43,57 @@ skus = (
     (
         "student-senior",
         "Student/Senior",
-        25
+        {'single-month-': 25,
+         'monthly-plan-': 22.50,
+         'one-year-': 230}
     ),
     (
         "individual",
         "Individual",
-        50
+        {'single-month-': 50,
+         'monthly-plan-': 45,
+         'one-year-': 460}
     ),
     (
         "family",
         "Family",
-        75
+        {'single-month-': 75,
+         'monthly-plan-': 65,
+         'one-year-': 700}
     ),
     (
         "sponsor",
         "Sponsor",
-        100
+        {'single-month-': 100,
+         'monthly-plan-': 90,
+         'one-year-': 975}
     ),
 )
 
 sku_mods = (
-    (
-        "first-month-",
-        "First Month",
-        0.5,
-        0.00,
-        '2015/05',
-        False
-    ),
+#    (
+#        "first-month-",
+#        "First Month",
+#        0.5,
+#        0.00,
+#        '2015/05',
+#        False
+#    ),
     (
         "single-month-",
         "Single Month",
-        1.0,
-        0.00,
         '2015/06',
         False,
     ),
     (
         "monthly-plan-",
         "Monthly",
-        0.0,
-        0.01,
         '2015/05',
         True
     ),
     (
         "one-year-",
         "One Year",
-        11.0,
-        0.0,
         '2015/06',
         False
     ),
@@ -157,15 +159,16 @@ for (sku, desc, value) in skus:
     print '<tr><td colspan="2"><h3>Add %s membership to cart</h3></td></tr>' % desc
 
     idx = 0
-    for (sku_prefix, desc_prefix, value_scale, value_add, media_upload_month, monthly_plan) in sku_mods:
+    for (sku_prefix, desc_prefix, media_upload_month, monthly_plan) in sku_mods:
         if idx % 2 == 0:
             print '<tr>'
         sku_ex = sku_prefix + sku
         desc_ex = 'FCCH Membership: ' + desc_prefix + ': ' + desc
-        value_ex = (value_scale * value) + value_add
         if monthly_plan:
-            plan_text = ', $%0.2f every month' % value
+            value_ex = 0.01
+            plan_text = ', $%0.2f every month' % value[sku_prefix]
         else:
+            value_ex = value[sku_prefix]
             plan_text = ''
         explain_text = '$%0.2f one-time charge' % value_ex + plan_text
         gen_form('process_cart', sku_ex, desc_ex, value_ex, media_upload_month, explain_text)
