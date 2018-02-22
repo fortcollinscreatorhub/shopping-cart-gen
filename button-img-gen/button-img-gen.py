@@ -76,7 +76,6 @@ def gen_img(text, filename):
         0, 0, 0, 0)
 
 plans = (
-    ("First Month", "first-month"),
     ("Single Month", "single-month"),
     ("Monthly Plan", "monthly-plan"),
     ("Prepay One Year", "one-year"),
@@ -87,6 +86,11 @@ levels = (
     ("Individual", "individual"),
     ("Family", "family"),
     ("Sponsor", "sponsor"),
+    ("Corporate-2", "corp-2"),
+    ("Corporate-3", "corp-3"),
+    ("Corporate-5", "corp-5"),
+    ("Corporate-10", "corp-10"),
+    ("Corporate-25", "corp-25"),
 )
 
 images = []

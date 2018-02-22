@@ -68,6 +68,31 @@ skus = (
          'monthly-plan-': 90,
          'one-year-': 975}
     ),
+    (
+        "corp-2",
+        "Corporate-2",
+        {'monthly-plan-': 69}
+    ),
+    (
+        "corp-3",
+        "Corporate-3",
+        {'monthly-plan-': 83}
+    ),
+    (
+        "corp-5",
+        "Corporate-5",
+        {'monthly-plan-': 110}
+    ),
+    (
+        "corp-10",
+        "Corporate-10",
+        {'monthly-plan-': 183}
+    ),
+    (
+        "corp-25",
+        "Corporate-25",
+        {'monthly-plan-': 367}
+    ),
 )
 
 sku_mods = (
@@ -160,6 +185,8 @@ for (sku, desc, value) in skus:
 
     idx = 0
     for (sku_prefix, desc_prefix, media_upload_month, monthly_plan) in sku_mods:
+	if sku_prefix not in value:
+	    continue;
         if idx % 2 == 0:
             print '<tr>'
         sku_ex = sku_prefix + sku
